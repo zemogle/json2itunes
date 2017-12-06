@@ -2,12 +2,11 @@
 <rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Pythagorean Astronomy</title>
-    <itunes:subtitle>Astronomy news and interviews with scientists involved in the discoveries.</itunes:subtitle>
+    <itunes:subtitle>Latest astronomy news and interviews.</itunes:subtitle>
     <itunes:author>Chris North and Edward Gomez</itunes:author>
     <copyright>© Dark Matter Sheep 2015</copyright>
     <language>en-gb</language>
-    <itunes:category text="Science & Medicine"/>
-    <itunes:category text="Natural Science" />
+    <itunes:category text="Science &amp; Medicine"/>
     <itunes:image href="http://blogs.cardiff.ac.uk/physicsoutreach/wp-content/uploads/sites/236/2017/11/StarWouldntDie-300x225.png"/>
     <link>http://www.pythagastro.uk/</link>
     <description>Astronomy news and interviews with scientists involved in the discoveries.</description>
@@ -31,6 +30,6 @@
       <itunes:explicit>No</itunes:explicit>
     </item>
     {% endfor %}
-    <atom:link href="http://gomez.me.uk/surviving_christmas/podcast.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="http://astrog80.astro.cf.ac.uk/pythagoras-trousers/podcast.xml" rel="self" type="application/rss+xml"/>
   </channel>
 </rss>

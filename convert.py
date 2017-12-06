@@ -6,7 +6,7 @@ from jinja2 import Environment, FileSystemLoader, Undefined
 import requests
 from bs4 import BeautifulSoup
 
-logger = logging.getLogger(__name__)
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 TEMPLATE_LOADER = FileSystemLoader('templates')
 OUTPUT_DIR = 'xml'
@@ -24,14 +24,14 @@ def get_data():
     try:
         r = requests.get(FEED_URL, timeout=20.0)
     except requests.exceptions.Timeout:
-        logger.error("PHYSX Blog timed out")
+        logging.error("PHYSX Blog timed out")
         return False
 
     if r.status_code in [200,201]:
-        logger.info('Downloaded latest podcast json')
+        logging.info('Downloaded latest podcast json')
         return r.json()
     else:
-        logger.error("Could not send request: {}".format(r.content))
+        logging.error("Could not send request: {}".format(r.content))
         return False
 
 
@@ -42,15 +42,17 @@ def extract_data(data):
     for post in posts:
         podcast = dict()
         if not post['custom_fields'].get('enclosure', None):
-            print(post['title'])
+            logging.error("No audio for: {}".format(post['title']))
             continue
-        podcast['file_url'] = post['custom_fields']['enclosure'][0].split('\n')[0]
+        podcast['file_url'] = post['custom_fields']['enclosure'][0].split('\n')[0].strip()
         podcast['title'] = post['title']
-        podcast['description'] =  BeautifulSoup(post['content'], "html.parser").text
-        podcast['excerpt'] = BeautifulSoup(post['excerpt'], "html.parser").text
+        desc = BeautifulSoup(post['content'], "html.parser").text
+        podcast['description'] =  desc.replace(podcast['file_url'],'').replace("& ", "&amp; ")
+        podcast['excerpt'] = BeautifulSoup(post['excerpt'], "html.parser").text[0:255].replace("& ", "&amp; ")
         datestamp = datetime.strptime(post['date'],'%Y-%m-%d %H:%M:%S')
         podcast['datestamp'] = datestamp.strftime("%a, %d %b %Y %H:%M:%S -0000")
         podcast['duration'] = "00:30:00"
+        podcast['length'] = "300000"
         episodes.append(podcast)
     return episodes
 
@@ -61,13 +63,13 @@ def render_xml_data(indata, filename):
     data['items'] = indata
 
     output_from_parsed_template = template.render(**data)
-    output_from_parsed_template.replace("–", " ")
+    output_from_parsed_template.replace("& ", "&amp; ")
 
     if not os.path.isdir(OUTPUT_DIR):
         os.mkdir(OUTPUT_DIR)
 
     with open(os.path.join(OUTPUT_DIR, filename), "w") as fh:
-        logger.debug('Writing out', fh.name)
+        logging.debug('Writing out {}'.format(fh.name))
         fh.write(output_from_parsed_template)
 
     return
