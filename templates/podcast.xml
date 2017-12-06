@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pythagorean Astronomy</title>
+    <itunes:subtitle>Astronomy news and interviews with scientists involved in the discoveries.</itunes:subtitle>
+    <itunes:author>Chris North and Edward Gomez</itunes:author>
+    <copyright>© Dark Matter Sheep 2015</copyright>
+    <language>en-gb</language>
+    <itunes:category text="Science & Medicine"/>
+    <itunes:category text="Natural Science" />
+    <itunes:image href="http://blogs.cardiff.ac.uk/physicsoutreach/wp-content/uploads/sites/236/2017/11/StarWouldntDie-300x225.png"/>
+    <link>http://www.pythagastro.uk/</link>
+    <description>Astronomy news and interviews with scientists involved in the discoveries.</description>
+    <itunes:summary>Astronomy news and interviews with scientists involved in the discoveries.</itunes:summary>
+    <itunes:owner>
+      <itunes:name></itunes:name>
+      <itunes:email>podcast@gomez.me.uk</itunes:email>
+    </itunes:owner>
+    <itunes:explicit>no</itunes:explicit>
+    {% for item in items %}
+    <item>
+      <title>{{item.title}}</title>
+      <itunes:subtitle>{{item.excerpt}}</itunes:subtitle>
+      <itunes:author>Chris North and Edward Gomez</itunes:author>
+      <itunes:summary>{{item.description}}</itunes:summary>
+      <enclosure url="{{item.file_url}}" length="{{item.length}}" type="audio/mpeg"/>
+      <guid>{{item.file_url}}</guid>
+      <itunes:duration>{{item.duration}}</itunes:duration>
+      <itunes:keywords>astronomy, space, telescopes, cardiff, science, research</itunes:keywords>
+      <pubDate>{{item.datestamp}}</pubDate>
+      <itunes:explicit>No</itunes:explicit>
+    </item>
+    {% endfor %}
+    <atom:link href="http://gomez.me.uk/surviving_christmas/podcast.xml" rel="self" type="application/rss+xml"/>
+  </channel>
+</rss>
